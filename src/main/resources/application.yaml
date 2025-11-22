@@ -1,0 +1,78 @@
+spring:
+  application:
+    name: notification-api
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    group-id: notification-consumer-group
+    notification:
+      consumer:
+        topic: ewallet_notification
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        properties:
+          spring:
+            json:
+              trusted:
+                packages: '*'
+              value:
+                default:
+                  type: coml.hcl.ewallet.notification_api.model.EmailNotification
+      email:
+        customer:
+          subject: Transaction on your e-Wallet
+        merchant:
+          subject: Merchant Transaction
+
+    audit:
+      consumer:
+        topic: ewallet_audit
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        properties:
+          spring:
+            json:
+              trusted:
+                packages: '*'
+              value:
+                default:
+                  type: coml.hcl.ewallet.notification_api.model.EmailNotification
+
+  # Email Configuration (SMTP)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your-email@gmail.com
+    password: your-app-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    default-encoding: UTF-8
+
+  # Database Configuration
+  datasource:
+    url: jdbc:h2:mem:notificationdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
