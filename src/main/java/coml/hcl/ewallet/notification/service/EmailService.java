@@ -1,13 +1,10 @@
 package coml.hcl.ewallet.notification.service;
 
-import coml.hcl.ewallet.notification.model.EmailNotification;
 import coml.hcl.ewallet.notification.model.TransactionNotification;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -48,7 +45,7 @@ public class EmailService {
             helper.setSubject(emailSubject);
             helper.setText(htmlContent, true);
 
-//            mailSender.send(mimeMessage);
+            mailSender.send(mimeMessage);
             log.info("Customer transaction email sent successfully for transaction: {}", transaction.getTransactionId());
         } catch (MessagingException e) {
             log.error("Failed to send customer transaction email for transaction: {}", transaction.getTransactionId(), e);
@@ -79,7 +76,7 @@ public class EmailService {
             helper.setSubject(emailSubject);
             helper.setText(htmlContent, true);
 
-//            mailSender.send(mimeMessage);
+            mailSender.send(mimeMessage);
             log.info("Merchant transaction email sent successfully for transaction: {}", transaction.getTransactionId());
         } catch (MessagingException e) {
             log.error("Failed to send merchant transaction email for transaction: {}", transaction.getTransactionId(), e);
